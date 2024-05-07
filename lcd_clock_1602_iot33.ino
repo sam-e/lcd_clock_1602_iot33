@@ -239,6 +239,7 @@ void custom5(int col)
 void custom6(int col)
 {
   lcd.setCursor(col,0);
+  lcd.write(2);
   lcd.write(3);
   lcd.write(4);
   lcd.setCursor(col, 1);
