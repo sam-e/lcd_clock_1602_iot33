@@ -5,7 +5,10 @@
 #include <WiFiNINA.h>
 
 #include "DFRobot_RGBLCD1602.h"
-DFRobot_RGBLCD1602 lcd(/*RGBAddr*/0x2D ,/*lcdCols*/16,/*lcdRows*/2);  //16 characters and 2 lines of show
+DFRobot_RGBLCD1602 lcd(/*RGBAddr*/0x2D ,
+                       /*lcdCols*/16,
+                       /*lcdRows*/2
+);  //16 characters and 2 lines of show
 
 #include "credentials.h"
 #include "charconvert.h"
@@ -98,9 +101,6 @@ byte bar8[8] = {
 };
 
 int status = WL_IDLE_STATUS;           // the Wi-Fi radio's status
-int ledState = LOW;                    //ledState used to set the LED
-unsigned long previousMillisInfo = 0;  //will store last time Wi-Fi information was updated
-unsigned long previousMillisLED = 0;   // will store the last time LED was updated
 const int intervalInfo = 5000;         // interval at which to update the board information
 
 Timezone myTZ;
@@ -115,19 +115,26 @@ void setup() {
 
   // set the cursor to the top left
   lcd.setCursor(0, 0);
+  lcd.write("Network Connect: ");
+  lcd.setCursor(2, 1);
+  lcd.write(ssid);
   
   // attempt to connect to Wi-Fi network:
   while (status != WL_CONNECTED) {
-    Serial.print("Connect to network:");
-    lcd.write("Attempting to connect to network: ");
-    lcd.setCursor(0, 1);
-    lcd.write(ssid);
     Serial.println(ssid);
     // Connect to WPA/WPA2 network:
     status = WiFi.begin(ssid, password);
   }
   // wait 10 seconds for connection:
   delay(10000);
+
+  lcd.clear();
+  lcd.write(" Connected! ");
+  //lcd.setCursor(2, 1);
+  //lcd.write(WiFi.localIP());  
+  delay(5000);
+  lcd.clear();
+
 
   // you're connected now, so print out the data:
   Serial.println("You're connected to the network");
